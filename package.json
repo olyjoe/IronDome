@@ -1,0 +1,12 @@
+{
+  "name": "missilecommand",
+  "version": "1.0.0",
+  "description": "missleCommand",
+  "license": "ISC",
+  "author": "Joe Hamilton",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "testMC"
+  }
+}

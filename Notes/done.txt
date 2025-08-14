@@ -1,0 +1,5 @@
+set up canvas
+animate nukes
+animate missles
+collision detection
+change from duration to speed
