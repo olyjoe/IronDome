@@ -2,11 +2,21 @@ colision detection on city
 city health / damange (impact to score, money, upgrades)
 buy new missles at new round? vs upgrades...(balance)
 delayed/staggered nuke release
+refactor exploding missile class for reuse across both nukes and missiles. 
+lots of duplicate code
 score
 levels
 nuke waves
 missile count indicator
 upgrades? radius, speed, damage
 damage health 
-UI
-upgrade graphics
+
+UI - menu
+UI - score
+UI - upgrades
+UI - level
+UI - waves
+
+upgrade graphics/assets
+game over
+restart

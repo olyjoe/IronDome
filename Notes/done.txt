@@ -1,7 +1,9 @@
 set up canvas
 animate nukes
 animate missles
+create stub for cities
 collision detection
 change from duration to speed
 animate ground explosion
 remove nuke after explosion
+UI - Missile Counter

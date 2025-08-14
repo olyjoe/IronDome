@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missle Command</title>
 </head>
-<body>
+<body style="overflow:none">
     <canvas id="gameview" width="1000" height="1000" style="background-color: black;"></canvas>
-    <!-- <div style="position:absolute;top:0px;right:0px;border:1px solid #000;height:100px;width:400px">
-        <div>Missles Count: <div id="missilesRemaining"></div></div>
-        <input type="button" onclick="missiles.missleCount = 10;" />
-    </div> -->
     <script src="classes/missileClass.js"></script>
     <script src="classes/cityClass.js"></script>
     <script src="classes/nukeClass.js"></script>
     <script src="classes/utitities.js"></script>
+    <script src="classes/ui.js"></script>
     <script src="classes/gameClass.js"></script>
     <script>
 
@@ -24,7 +21,8 @@
         let missiles = new Missiles();
         let cities = new Cities();
         let nukes = new Nukes();
-        
+        let ui = new Ui();
+
         let game = new Game(missiles, nukes, cities);
 
         let lastTime = performance.now();
@@ -47,6 +45,14 @@
         }
 
         function draw(ctx) {
+            if(ui.assets[0].ready)
+            {
+            
+                for(var n = 0; n < missiles.missileCount; n++)
+                {
+                    ctx.drawImage(ui.assets[0].imageObj,(25*n),0, 25, 50);
+                }
+            }
             missiles.drawMissiles(ctx);
             cities.drawCities(ctx);
             nukes.drawNukes(ctx, missiles.activeMissiles);

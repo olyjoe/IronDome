@@ -125,7 +125,7 @@ class Missile
         this.progress = 0
         this.duration = duration
         this.traveled = 0
-        this.velocity = 800;
+        this.velocity = 1800;
         this.state = MissileStates.INTERCEPTING
     }
 
