@@ -1,4 +1,4 @@
-class Ui
+export class Ui
 {
     constructor()
     {

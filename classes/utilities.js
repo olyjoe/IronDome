@@ -1,4 +1,4 @@
-class util
+export class util
 {
     static getRandomValue(min, max)
     {

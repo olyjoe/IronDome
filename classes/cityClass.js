@@ -1,4 +1,4 @@
-class Cities
+export class Cities
 {
     constructor() 
     {

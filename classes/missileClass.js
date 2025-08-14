@@ -1,7 +1,9 @@
-import ExplodingProjectile from './explodingProjectileClass.js'
-class Missiles
+//import { ExplodingProjectile } from './explodingProjectileClass.js'
+export class Missiles
 {
     constructor() {
+        this.ep = new ExplodingProjectile("test1");
+
         this.maxRadius = 30;
         this.minRadius = 5;
         this.growthRate = 40;
@@ -86,7 +88,7 @@ class Missiles
     {
         if(this.missileCount > 0 && this.activeMissiles.length <= this.maxMissiles)
         {
-            lastTime = performance.now();
+            
             
             var oMis = new Missile(500,1000,e.clientX, e.clientY, this.duration);
            // oMis.state = MissileStates.EXPANDING
