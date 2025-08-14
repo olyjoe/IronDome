@@ -17,17 +17,6 @@ class Missiles
         {
             var o = this.activeMissiles[n];
             
-            //o.progress += deltaTime / o.duration;
-            //if (o.progress > 1 && o.state === MissileStates.INTERCEPTING) 
-            //{
-            //    o.progress = 1;
-            //    o.state = MissileStates.EXPANDING
-            //}
-
-            //o.cx = o.x + (o.dx - o.x) * o.progress;
-            //o.cy = o.y + (o.dy - o.y) * o.progress;
-            // o.cx = o.x + (o.dx - o.x)
-            //o.cy = o.y + (o.dy - o.y)
             const dx = o.dx - o.x;
             const dy = o.dy - o.y;
             const totalDistance = Math.hypot(dx, dy);
@@ -35,7 +24,7 @@ class Missiles
             const dirX = dx / totalDistance;
             const dirY = dy / totalDistance;
 
-            const distanceStep = o.velocity * deltaTime; // pixels this frame
+            const distanceStep = o.velocity * deltaTime; 
             o.traveled += distanceStep;
         
             if (o.traveled > totalDistance && o.state === MissileStates.INTERCEPTING)
@@ -47,10 +36,6 @@ class Missiles
             o.cx = o.x + dirX * o.traveled;
             o.cy = o.y + dirY * o.traveled;
 
-            if(o.state === MissileStates.EXPANDING || o.state === MissileStates.RETRACTING)
-            {
-                console.log('state ' + o.state + ' radius ' + o.radius + ' maxRadius ' + this.maxRadius + ' minRadius ' + this.minRadius)
-            }
             if(o.radius < this.maxRadius && o.state === MissileStates.EXPANDING)
             {
                 o.radius += this.growthRate * deltaTime;

@@ -3,3 +3,5 @@ animate nukes
 animate missles
 collision detection
 change from duration to speed
+animate ground explosion
+remove nuke after explosion

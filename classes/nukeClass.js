@@ -5,16 +5,28 @@ class Nukes
         this.activeNukes = [];
         this.counter = 0;
         this.duration = 9;
-
-        var randomX = util.getRandomValue(1,999);
-
-        this.activeNukes.push(new Nuke(++this.counter, randomX,1, this.duration, 1));
+        this.level = 2;
+        this.maxRadius = 50;
+        this.growthRate = 40;
+        this.addRandomNuke(this.level);
         
+    }
+
+    addRandomNuke(level)
+    {
+        for (var n = 0; n < level; n++)
+        {
+            var randomX = util.getRandomValue(1,999);
+            this.activeNukes.push(new Nuke(++this.counter, randomX,1, this.duration, 1));
+        }
     }
 
     updateNukes( deltaTime )
     {
- 
+        if ( this.activeNukes.length === 0)
+        {
+            this.addRandomNuke(this.level);
+        }
         for(var n = 0; n < this.activeNukes.length; n++)
         {
             var o = this.activeNukes[n];
@@ -32,17 +44,31 @@ class Nukes
             
             var o = this.activeNukes[n];
            
-            if(o.state === NukeStates.INACTIVE  || o.state === NukeStates.REMOVE)
+            if(o.state === NukeStates.INACTIVE)
             {
-                o.state = NukeStates.REMOVE;   
+                o.fadeOut();
+                continue; 
             }
 
+            if(o.state === NukeStates.EXPANDED)
+            {
+                o.fadeOut();
+                continue;
+            }
             o.progress += deltaTime / o.duration;
             if (o.progress > 1) 
             {
                 o.progress = 1;
+                o.state = NukeStates.EXPANDING;
             }
-
+            if(o.radius < this.maxRadius && o.state === NukeStates.EXPANDING)
+            {
+                o.radius += this.growthRate * deltaTime;
+            }
+            else if (o.radius >= this.maxRadius && o.state === NukeStates.EXPANDING)
+            {
+                o.state = NukeStates.EXPANDED;
+            }
             o.cx = o.x + (o.dx - o.x) * o.progress;
             o.cy = o.y + (o.dy - o.y) * o.progress;
             
@@ -61,9 +87,11 @@ class Nukes
         for(var n = 0; n < this.activeNukes.length; n++)
         {
             var o = this.activeNukes[n];
+
+            
             const gradient = ctx.createLinearGradient(o.x, o.y, o.cx, o.cy);
-            gradient.addColorStop(0, 'black'); // Start color
-            gradient.addColorStop(1, 'red');  // End color
+            gradient.addColorStop(0, o.getStrokeStyle(1)); // Start color
+            gradient.addColorStop(1, o.getStrokeStyle(2));  // End color
             ctx.beginPath();
             ctx.moveTo(o.x, o.y);
             ctx.lineTo(o.cx, o.cy);
@@ -73,6 +101,15 @@ class Nukes
             ctx.lineCap = 'round';
             ctx.lineCapStyle = 'red';
             ctx.stroke();
+            
+            if (o.state === NukeStates.EXPANDING)
+            {
+                ctx.beginPath();
+                ctx.arc(o.cx, o.cy, o.radius, 0, Math.PI * 2);
+                ctx.fillStyle = o.getStrokeStyle(2);
+                ctx.fill();
+            }
+
             if (o.state === NukeStates.ACTIVE && this.checkCircleCollision(o.cx, o.cy, o.index, activeMissiles) === true)
             {
                 o.state = NukeStates.INACTIVE;
@@ -82,7 +119,7 @@ class Nukes
 
    
 
-    checkCircleCollision(x, y,index, activeMissiles)
+    checkCircleCollision(x, y, index, activeMissiles)
     {
       
         if(activeMissiles.length > 0)
@@ -108,6 +145,8 @@ class NukeStates
     static ACTIVE = 0;
     static INACTIVE = 1;
     static REMOVE = 2;
+    static EXPANDING = 3;
+    static EXPANDED = 4;
 }
 
 class Nuke
@@ -120,11 +159,12 @@ class Nuke
         this.cx = originX
         this.cy = originY
         this.dx = util.getRandomValue(1,999);
-        this.dy = 1000
-        this.r = 100
-        this.g = 0
-        this.b = 255
+        this.dy = 999
+        this.r = 200
+        this.g = 10
+        this.b = 10
         this.a = 1
+        this.radius = 0
         this.progress = 0
         this.duration = duration
         this.maxSplits = maxSplits
@@ -133,20 +173,24 @@ class Nuke
     }
 
     
-    getStrokeStyle(){
-        return 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')'
+    getStrokeStyle(option){
+        if (option === 1)
+        {
+            return 'rgba(0, 0, 0,' + this.a + ')'
+        } else
+            return 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')'
     }
     
-    // fadeOut(activeNukes){
-    //     if(this.a > 0)
-    //     {
-    //         this.a -= .05;
-    //     }
-    //     else
-    //     {
-    //         this.state = NukeStates.REMOVE;
-    //     }
+    fadeOut(){
+        if(this.a > 0)
+        {
+            this.a -= .02;
+        }
+        else
+        {
+            this.state = NukeStates.REMOVE;
+        }
             
-    // }
+    }
     
 }
