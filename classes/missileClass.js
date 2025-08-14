@@ -1,3 +1,4 @@
+import ExplodingProjectile from './explodingProjectileClass.js'
 class Missiles
 {
     constructor() {
@@ -7,7 +8,6 @@ class Missiles
         this.maxMissiles = 3;
         this.missileCount = 10;
         this.duration = .5;
-        
         this.activeMissiles = [];
     }
 

@@ -37,8 +37,6 @@ class Nukes
             }
         }
 
-
-        
         for(var n = 0; n < this.activeNukes.length; n++)
         {
             
@@ -116,8 +114,6 @@ class Nukes
             }
         }
     }
-
-   
 
     checkCircleCollision(x, y, index, activeMissiles)
     {

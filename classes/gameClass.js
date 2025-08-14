@@ -8,5 +8,4 @@ class Game
         this.nukes = nukes;
         this.cities = cities;
     }
-
 }

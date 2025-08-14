@@ -1,6 +1,5 @@
 class Ui
 {
-    
     constructor()
     {
         this.assets = [];
@@ -25,10 +24,4 @@ class Ui
         };
         this.assets.push([{id: id, imageObj: oImg, ready: false}]);
     }
-
-        
-        
-
-       
-
 }
