@@ -1,15 +1,14 @@
 //import { ExplodingProjectile } from './explodingProjectileClass.js'
-export class Missiles
+export class Missiles //extends ExplodingProjectile
 {
     constructor() {
-        this.ep = new ExplodingProjectile("test1");
+
 
         this.maxRadius = 30;
         this.minRadius = 5;
         this.growthRate = 40;
         this.maxMissiles = 3;
         this.missileCount = 10;
-        this.duration = .5;
         this.activeMissiles = [];
     }
 
@@ -88,15 +87,10 @@ export class Missiles
     {
         if(this.missileCount > 0 && this.activeMissiles.length <= this.maxMissiles)
         {
-            
-            
-            var oMis = new Missile(500,1000,e.clientX, e.clientY, this.duration);
-           // oMis.state = MissileStates.EXPANDING
-            //this.activeMissiles.push({x: e.clientX, y: e.clientY, radius: 1, state: MissileStates.EXPANDING, currentTime: lastTime});
+            var oMis = new Missile(500,1000,e.clientX, e.clientY);
             this.activeMissiles.push(oMis);
             this.missileCount--;
        
-            //document.getElementById("missilesRemaining").innerText = this.missileCount;
         }
     }
 }
@@ -110,42 +104,40 @@ class MissileStates
 
 class Missile
 {
-    constructor(originX, originY, destX, destY, duration)
+    #cx = 0
+    #cy = 0
+
+    constructor(originX, originY, destX, destY)
     {
         
         this.x = originX
         this.y = originY
-        this.cx = originX
-        this.cy = originY
         this.dx = destX
         this.dy = destY
-        this.r = 255
-        this.g = 255
-        this.b = 255
-        this.a = 1
+        this.rgba = {r:255, g:255, b:255, a: 1}
         this.radius = 5
-        this.progress = 0
-        this.duration = duration
         this.traveled = 0
         this.velocity = 1800;
         this.state = MissileStates.INTERCEPTING
+        this.setCurrentLcation(this.x, this.y);
+
+
     }
 
-    
+    getCurrentLocation()
+    {
+        return {x:this.#cx, y:this.#cy}
+    }
+    setCurrentLcation(x,y)
+    {
+        this.#cx = x
+        this.#cy = y
+    }
+
     getStrokeStyle(){
-        return 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')'
+        return 'rgba(' + this.rgba.r + ',' + this.rgba.g + ',' + this.rgba.b + ',' + this.rgba.a + ')'
     }
     
-    // fadeOut(activeNukes){
-    //     if(this.a > 0)
-    //     {
-    //         this.a -= .05;
-    //     }
-    //     else
-    //     {
-    //         this.state = NukeStates.REMOVE;
-    //     }
-            
-    // }
+    
     
 }

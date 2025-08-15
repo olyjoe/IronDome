@@ -1,3 +1,7 @@
+
+REFACTOR to modules (requires live server instead of allowing local run)
+use classes, imports, and extend
+
 colision detection on city
 city health / damange (impact to score, money, upgrades)
 buy new missles at new round? vs upgrades...(balance)

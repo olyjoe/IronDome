@@ -1,16 +1,18 @@
 import { Projectile } from './projectileClass.js'
 
-export class ExplodingProjectile //extends Projectile
+export class ExplodingProjectile extends Projectile
 {
-    constructor(name)
+    constructor()
     {
-        this.greet(name);
-        var myProj = new Projectile('test');
-        myProj.greet()
+        this.maxRadius = 30;
+        this.minRadius = 5;
+        this.growthRate = 40;
+        this.maxMissiles = 3;
+        this.ProjectileCount = 10;
+        this.duration = .5;
+        this.explodingProjecticles = [];
     }
 
-    greet(name){
-        console.log('hello ' + name)
-    }
+ 
     
 }
