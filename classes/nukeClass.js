@@ -1,14 +1,20 @@
 import { util } from './utilities.js'
-export class Nukes
+import { Point2d } from './geometryClass.js'
+import { Projectile, Projectiles, ProjectileStates } from './projectileClass.js'
+export class Nukes extends Projectiles
 {
     constructor()
     {
-        this.activeNukes = [];
+        if (Nukes.instace)
+        {
+            return Nukes.instance    
+        }
+        super()
+        Nukes.instance = this
+        this.activeProjectiles = [];
         this.counter = 0;
-        this.duration = 9;
         this.level = 2;
-        this.maxRadius = 50;
-        this.growthRate = 40;
+
         this.addRandomNuke(this.level);
         
     }
@@ -16,57 +22,59 @@ export class Nukes
     addRandomNuke(level)
     {
         for (var n = 0; n < level; n++)
-        {
-            var randomX = util.getRandomValue(1,999);
-            this.activeNukes.push(new Nuke(++this.counter, randomX,1, this.duration, 1));
+        {  
+            var pOrigin = new Point2d(util.getRandomValue(1,999), 0)
+            var pDest = new Point2d(util.getRandomValue(1,999), 999)
+            
+            this.activeProjectiles.push(new Nuke(pOrigin, pDest, ProjectileStates.ACTIVE, 100, {r: 200, g:10, b:10, a:1}, ++this.counter))
+
         }
     }
 
     updateNukes( deltaTime )
     {
-        if ( this.activeNukes.length === 0)
+        if ( this.activeProjectiles.length === 0)
         {
             this.addRandomNuke(this.level);
         }
-        for(var n = 0; n < this.activeNukes.length; n++)
+        this.updateProjectiles( deltaTime )
+        
+        for(var n = 0; n < this.activeProjectiles.length; n++)
         {
-            var o = this.activeNukes[n];
-            if(o.state === NukeStates.REMOVE)
+            var o = this.activeProjectiles[n];
+            if(o.state === ProjectileStates.REMOVE)
             {
-                this.activeNukes.splice(n,1);
+                this.activeProjectiles.splice(n,1);
                 break;
             }
         }
-
-        for(var n = 0; n < this.activeNukes.length; n++)
+        
+        for(var n = 0; n < this.activeProjectiles.length; n++)
         {
             
-            var o = this.activeNukes[n];
+            var o = this.activeProjectiles[n];
            
-            if(o.state === NukeStates.INACTIVE)
+            if(o.state === ProjectileStates.INACTIVE)
             {
                 o.fadeOut();
                 continue; 
             }
 
-            if(o.state === NukeStates.EXPANDED)
+            if(o.state === ProjectileStates.RETRACTING)
             {
                 o.fadeOut();
                 continue;
             }
-            o.progress += deltaTime / o.duration;
-            if (o.progress > 1) 
+        }
+       /*
+            
+            if(o.radius < o.maxRadius && o.state === ProjectileStates.EXPANDING)
             {
-                o.progress = 1;
-                o.state = NukeStates.EXPANDING;
+                o.radius += o.growthRate * deltaTime;
             }
-            if(o.radius < this.maxRadius && o.state === NukeStates.EXPANDING)
+            else if (o.radius >= o.maxRadius && o.state === ProjectileStates.EXPANDING)
             {
-                o.radius += this.growthRate * deltaTime;
-            }
-            else if (o.radius >= this.maxRadius && o.state === NukeStates.EXPANDING)
-            {
-                o.state = NukeStates.EXPANDED;
+                o.state = ProjectileStates.EXPANDED;
             }
             o.cx = o.x + (o.dx - o.x) * o.progress;
             o.cy = o.y + (o.dy - o.y) * o.progress;
@@ -76,118 +84,98 @@ export class Nukes
             {
                 o.maxSplits -= 1;
                 var nk = new Nuke(++this.counter, o.cx, o.cy, this.duration, 0);
-                this.activeNukes.push(nk);
+                this.activeProjectiles.push(nk);
             }
         }
+                */
     }
 
     drawNukes(ctx, activeMissiles)
-    {
-        for(var n = 0; n < this.activeNukes.length; n++)
+    {        
+        for(var n = 0; n < this.activeProjectiles.length; n++)
         {
-            var o = this.activeNukes[n];
+            var o = this.activeProjectiles[n];
+            const gradient = ctx.createLinearGradient(o.pOrigin.x, o.pOrigin.y, o.getCurrentLocation().x, o.getCurrentLocation().y);
+            gradient.addColorStop(0, o.getStrokeStyle(1))
+            gradient.addColorStop(1, o.getStrokeStyle(2))
 
-            
-            const gradient = ctx.createLinearGradient(o.x, o.y, o.cx, o.cy);
-            gradient.addColorStop(0, o.getStrokeStyle(1)); // Start color
-            gradient.addColorStop(1, o.getStrokeStyle(2));  // End color
             ctx.beginPath();
-            ctx.moveTo(o.x, o.y);
-            ctx.lineTo(o.cx, o.cy);
+            ctx.moveTo(o.pOrigin.x, o.pOrigin.y);
+            ctx.lineTo(o.getCurrentLocation().x, o.getCurrentLocation().y);
             ctx.lineWidth = 5;
-            //ctx.strokeStyle = o.getStrokeStyle();
             ctx.strokeStyle = gradient;
             ctx.lineCap = 'round';
             ctx.lineCapStyle = 'red';
             ctx.stroke();
             
-            if (o.state === NukeStates.EXPANDING)
+            if (o.state === ProjectileStates.EXPANDING)
             {
                 ctx.beginPath();
-                ctx.arc(o.cx, o.cy, o.radius, 0, Math.PI * 2);
+                ctx.arc(o.pDestination.x,o.pDestination.y, o.radius, 0, Math.PI * 2);
                 ctx.fillStyle = o.getStrokeStyle(2);
                 ctx.fill();
             }
-
-            if (o.state === NukeStates.ACTIVE && this.checkCircleCollision(o.cx, o.cy, o.index, activeMissiles) === true)
+        
+            if (    o.state === ProjectileStates.ACTIVE && 
+                    this.checkCircleCollision(o.getCurrentLocation(), activeMissiles) === true)
             {
-                o.state = NukeStates.INACTIVE;
+                o.state = ProjectileStates.INACTIVE;
             }
         }
     }
 
-    checkCircleCollision(x, y, index, activeMissiles)
+    checkCircleCollision(pCurrent, activeMissiles)
     {
-      
+        
         if(activeMissiles.length > 0)
         {
+            console.log(activeMissiles.length)
             for(var n = 0; n < activeMissiles.length; n++)
             {
-                var o = activeMissiles[n];
-                var zx = x - o.dx;
-                var zy = y - o.dy;
-
-                if((zx * zx + zy * zy) <= (o.radius * o.radius))
+                var o2 = activeMissiles[n];
+                var result = Point2d.isPointInCircle(pCurrent, o2.pDestination, o2.radius)
+                if (result)
                 {
-                    return true;
+                    o2.hit = true;
                 }
+                return result
             }
             return false;
         }
     }
 }
-
-class NukeStates
+class Nuke extends Projectile
 {
-    static ACTIVE = 0;
-    static INACTIVE = 1;
-    static REMOVE = 2;
-    static EXPANDING = 3;
-    static EXPANDED = 4;
-}
-
-class Nuke
-{
-    constructor(index, originX, originY, duration, maxSplits)
+    constructor(pOrigin, pDestination, state, velocity, rgba, index)
     {
-        this.index = index
-        this.x = originX
-        this.y = originY
-        this.cx = originX
-        this.cy = originY
-        this.dx = util.getRandomValue(1,999);
-        this.dy = 999
-        this.r = 200
-        this.g = 10
-        this.b = 10
-        this.a = 1
-        this.radius = 0
-        this.progress = 0
-        this.duration = duration
-        this.maxSplits = maxSplits
-        this.state = NukeStates.ACTIVE
-        this.hassplit = false;
+        super(pOrigin, pDestination, state, 'red',   'round',      velocity, 5,rgba, true)
+        this.setCurrentLocation(pOrigin);
+        this.maxSplits = 0
+        this.hassplit = false
+        this.maxRadius = 50;
+        this.growthRate = 30;
     }
 
     
-    getStrokeStyle(option){
+    getStrokeStyle(option)
+    {
         if (option === 1)
         {
-            return 'rgba(0, 0, 0,' + this.a + ')'
+            return 'rgba(0, 0, 0,' + this.rgba.a + ')'
         } else
-            return 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')'
+            return 'rgba(' + this.rgba.r + ',' + this.rgba.g + ',' + this.rgba.b + ',' + this.rgba.a + ')'
     }
     
-    fadeOut(){
-        if(this.a > 0)
+    fadeOut()
+    {
+        if(this.rgba.a > 0)
         {
-            this.a -= .02;
+            this.rgba.a -= .02;
         }
         else
         {
-            this.state = NukeStates.REMOVE;
+            this.state = ProjectileStates.REMOVE;
         }
-            
     }
     
 }

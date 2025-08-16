@@ -1,143 +1,61 @@
-//import { ExplodingProjectile } from './explodingProjectileClass.js'
-export class Missiles //extends ExplodingProjectile
+
+import { Point2d } from './geometryClass.js'
+import { Projectile, Projectiles, ProjectileStates } from './projectileClass.js'
+export class Missiles extends Projectiles
 {
+    
     constructor() {
-
-
-        this.maxRadius = 30;
-        this.minRadius = 5;
-        this.growthRate = 40;
-        this.maxMissiles = 3;
-        this.missileCount = 10;
-        this.activeMissiles = [];
+        if (Missiles.instace)
+        {
+            return Missiles.instance    
+        }
+        super()
+        Missiles.instace = this
+        this.maxMissiles = 3
+        this.missileCount = 10
     }
 
-    updateMissiles(deltaTime) {
+    updateMissiles(deltaTime) 
+    {
         var tempArr = [];
-        for(var n = 0; n < this.activeMissiles.length; n++)
+        this.updateProjectiles( deltaTime )
+        for (var n = 0; n < this.activeProjectiles.length; n++)
         {
-            var o = this.activeMissiles[n];
-            
-            const dx = o.dx - o.x;
-            const dy = o.dy - o.y;
-            const totalDistance = Math.hypot(dx, dy);
-            // Normalize direction
-            const dirX = dx / totalDistance;
-            const dirY = dy / totalDistance;
-
-            const distanceStep = o.velocity * deltaTime; 
-            o.traveled += distanceStep;
-        
-            if (o.traveled > totalDistance && o.state === MissileStates.INTERCEPTING)
-            { 
-                o.traveled = totalDistance;
-                o.state = MissileStates.EXPANDING;
-            }
-
-            o.cx = o.x + dirX * o.traveled;
-            o.cy = o.y + dirY * o.traveled;
-
-            if(o.radius < this.maxRadius && o.state === MissileStates.EXPANDING)
+            var o = this.activeProjectiles[n]
+            if (o.state === ProjectileStates.REMOVE)
             {
-                o.radius += this.growthRate * deltaTime;
-            }
-            else if (o.radius >= this.maxRadius && o.state === MissileStates.EXPANDING)
-            {
-                o.state = MissileStates.RETRACTING;
-            }
-            else if (o.radius > this.minRadius && o.state === MissileStates.RETRACTING)
-            {
-                o.radius -= this.growthRate * deltaTime;
-            }
-            else if (o.state !== MissileStates.INTERCEPTING)
-            {
-                tempArr = this.activeMissiles.slice(1);
-                this.activeMissiles = tempArr;
+                tempArr = this.activeProjectiles.slice(1);
+                this.activeProjectiles = tempArr;
             }
         }
     }
+
     drawMissiles(ctx)
     {
-        
-        for(var n = 0; n < this.activeMissiles.length; n++)
-        {
-            var o = this.activeMissiles[n];
-            
-            if(o.state===MissileStates.INTERCEPTING)
-            {
-                ctx.beginPath();
-                ctx.moveTo(o.x, o.y);
-                ctx.lineTo(o.cx, o.cy);
-                ctx.lineWidth = 5;
-                ctx.strokeStyle = o.getStrokeStyle();
-                ctx.lineCap = 'round';
-                ctx.lineCapStyle = 'red';
-                ctx.stroke();
-            }
-            else //(o.state === MissileStates.EXPANDING || o.state === MissileStates.RETRACTING)
-            {
-                ctx.beginPath();
-                ctx.arc(o.dx, o.dy, o.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'white';
-                ctx.fill();
-            }
-        }
+        this.drawProjectile(ctx)
     }
     handleClick(e)
     {
-        if(this.missileCount > 0 && this.activeMissiles.length <= this.maxMissiles)
-        {
-            var oMis = new Missile(500,1000,e.clientX, e.clientY);
-            this.activeMissiles.push(oMis);
+        if(this.missileCount > 0 && this.activeProjectiles.length <= this.maxMissiles)
+        {   
+            var pDestination = new Point2d(e.clientX, e.clientY)
+            var pOrigin = new Point2d(500,1000)
+            var velocity = 1800
+            var state = ProjectileStates.INTERCEPTING
+            var rgba = {r:255, g:255, b:255, a: 1}
+
+            var oMis = new Missile(pOrigin,pDestination, velocity, state, rgba)
+
+            this.activeProjectiles.push(oMis);
             this.missileCount--;
-       
         }
     }
 }
-
-class MissileStates
+class Missile extends Projectile
 {
-    static INTERCEPTING = 0;
-    static EXPANDING = 1;
-    static RETRACTING = 2;
-}
-
-class Missile
-{
-    #cx = 0
-    #cy = 0
-
-    constructor(originX, originY, destX, destY)
+    constructor(pOrigin, pDestination, velocity, state, rgba)
     {
-        
-        this.x = originX
-        this.y = originY
-        this.dx = destX
-        this.dy = destY
-        this.rgba = {r:255, g:255, b:255, a: 1}
-        this.radius = 5
-        this.traveled = 0
-        this.velocity = 1800;
-        this.state = MissileStates.INTERCEPTING
-        this.setCurrentLcation(this.x, this.y);
-
-
+        super(pOrigin, pDestination, state, 'red',   'round',      velocity, 5,rgba, true)
+        this.setCurrentLocation(pOrigin);
     }
-
-    getCurrentLocation()
-    {
-        return {x:this.#cx, y:this.#cy}
-    }
-    setCurrentLcation(x,y)
-    {
-        this.#cx = x
-        this.#cy = y
-    }
-
-    getStrokeStyle(){
-        return 'rgba(' + this.rgba.r + ',' + this.rgba.g + ',' + this.rgba.b + ',' + this.rgba.a + ')'
-    }
-    
-    
-    
 }
