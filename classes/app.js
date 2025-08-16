@@ -27,6 +27,11 @@ import { Game } from "./gameClass.js"
         update(deltaTime)
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         draw(ctx)
+        if(game.gameOver)
+        {
+            ui.drawGameOver(ctx);
+            return;
+        }
         requestAnimationFrame(gameLoop)
     }
 

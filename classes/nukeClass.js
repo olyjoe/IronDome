@@ -73,28 +73,6 @@ export class Nukes extends Projectiles
                 continue
             }
         }
-       /*
-            
-            if(o.radius < o.maxRadius && o.state === ProjectileStates.EXPANDING)
-            {
-                o.radius += o.growthRate * deltaTime;
-            }
-            else if (o.radius >= o.maxRadius && o.state === ProjectileStates.EXPANDING)
-            {
-                o.state = ProjectileStates.EXPANDED;
-            }
-            o.cx = o.x + (o.dx - o.x) * o.progress;
-            o.cy = o.y + (o.dy - o.y) * o.progress;
-            
-           
-            if(o.cy > 150  && o.maxSplits > 0)
-            {
-                o.maxSplits -= 1;
-                var nk = new Nuke(++this.counter, o.cx, o.cy, this.duration, 0);
-                this.activeProjectiles.push(nk);
-            }
-        }
-                */
     }
 
     drawNukes(ctx, activeMissiles)
@@ -156,16 +134,24 @@ class Nuke extends Projectile
 {
     constructor(pOrigin, pDestination, state, velocity, rgba, index)
     {
-        super(pOrigin, pDestination, state, 'red',   'round',      velocity, 5,rgba, true)
+        super(  pOrigin, 
+                pDestination, 
+                state, 
+                'red',   
+                'round',      
+                velocity, 
+                5,
+                rgba, 
+                true)
         this.setCurrentLocation(pOrigin)
         this.maxSplits = 0
         this.hassplit = false
         this.maxRadius = 50
         this.growthRate = 30
-        this.damage = .05
+        this.damage = 25
+        this.id = index
     }
-
-    
+ 
     getStrokeStyle(option)
     {
         if (option === 1)

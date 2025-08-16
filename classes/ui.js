@@ -31,7 +31,16 @@ export class Ui
         ctx.font = '20px Arial'
         ctx.fillStyle = 'white'
         ctx.fillText(`Score: ${this.#game.score}`, 0, 60)
-        //ctx.fillText(`Time: 100`, 0, 90)
+    }
+
+    drawGameOver(ctx)
+    {
+        ctx.font = '50px Arial'
+        ctx.fillStyle = 'white'
+        ctx.fillText(`Game Over! score: ${this.#game.score}`, 
+            parseInt(this.#game.canvasWidth / 4), 
+            parseInt(this.#game.canvasHeight / 2)
+        )
     }
 
 }

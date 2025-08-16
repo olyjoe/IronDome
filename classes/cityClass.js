@@ -41,9 +41,8 @@ export class Cities
 
     updateCities( deltaTime, activeNukes )
     {
-        //TODO
-        //only subtract nuke.damage per collision
-        //direct hit vs splash dmg?
+        if(this.activeCities.reduce((sum, item) => sum + item.health, 0) === 0)
+            this.#game.gameOver = true
 
         for(var z = 0; z < activeNukes.length; z++)
         {
@@ -53,16 +52,23 @@ export class Cities
                 for(var n = 0; n < this.activeCities.length; n++)
                 {
                     var c = this.activeCities[n]
-
-                    var hit = Rect2d.doesCircleHitRect(
-                        o, c.rect
-                    )
-                    if (hit == true)
+                    
+                    if(c.hitBy.indexOf(o.id) === -1)
                     {
-                        console.log('city ' + n + ' hit!')
-                        //TODO
-                        //don't calc every frame, once per hit
-                        c.health -= 0.5
+                        var hit = Rect2d.doesCircleHitRect(
+                            o, c.rect
+                        )
+                        if (hit === true)
+                        {
+                            c.hitBy.push(o.id)
+                            c.health -= o.damage
+                            if (c.health <= 0)
+                            {
+                                //TODO
+                                //remove city from array
+                                c.health = 0
+                            }
+                        }
                     }
                 }
             }
@@ -111,6 +117,7 @@ class City
         this.rect = rect
         this.health = health
         this.rgba = {r:200, g:200, b:200, a:1}
+        this.hitBy = [];
     }
 
      getStrokeStyle()

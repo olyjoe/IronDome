@@ -9,6 +9,8 @@ remove nuke after explosion
 UI - Missile Counter
 make appropriate classes singletons
 UI - score
+game over
+upgrade graphics/assets
 
 REFACTOR to modules (requires live server instead of allowing local run)
 use classes, imports, and extend
@@ -16,3 +18,8 @@ refactor exploding missile class for reuse across both nukes and missiles.
 lots of duplicate code
 
 building spritesheet
+
+spritesheet 1024,1024
+width 256
+height of image: 450
+top offset 281
