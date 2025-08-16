@@ -9,7 +9,7 @@ export class Ui
             return Ui.instance    
         }
         Ui.instance = this
-        this.assets = [];
+        this.assets = []
         this.loadAsset('missileInd', 'assets/missile.png', 20, 50)
         this.loadAsset('building','assets/building.png', 70,100 )
   
@@ -17,21 +17,21 @@ export class Ui
 
     loadAsset(id, path, width, height)
     {
-        var index = this.assets.length;
-        var oImg = new Image(width, height);
-        oImg.src = path;
+        var index = this.assets.length
+        var oImg = new Image(width, height)
+        oImg.src = path
         oImg.onload = () => {
             this.assets[index].imageObj = oImg
             this.assets[index].ready = true
         };
-        this.assets.push([{id: id, imageObj: oImg, ready: false}]);
+        this.assets.push([{id: id, imageObj: oImg, ready: false}])
     }
 
     drawHUD(ctx) {
-        ctx.font = '20px Arial';
-        ctx.fillStyle = 'white';
-        ctx.fillText(`Score: ${this.#game.score}`, 0, 60);
-        //ctx.fillText(`Time: 100`, 0, 90);
+        ctx.font = '20px Arial'
+        ctx.fillStyle = 'white'
+        ctx.fillText(`Score: ${this.#game.score}`, 0, 60)
+        //ctx.fillText(`Time: 100`, 0, 90)
     }
 
 }

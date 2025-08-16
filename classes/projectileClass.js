@@ -11,31 +11,31 @@ export class Projectiles
         
         for(var n = 0; n < this.activeProjectiles.length; n++)
         {
-            var o = this.activeProjectiles[n];
+            var o = this.activeProjectiles[n]
             const deltaPoint = Point2d.getDistanceBetween2Points(o.pOrigin, o.pDestination)
-            const totalDistance = Math.hypot(deltaPoint.x, deltaPoint.y);
+            const totalDistance = Math.hypot(deltaPoint.x, deltaPoint.y)
             const dirPoint = Point2d.getPointAtDistance(deltaPoint, totalDistance)
             const distanceStep = o.velocity * deltaTime
-            o.traveled += distanceStep;
+            o.traveled += distanceStep
             if (o.traveled > totalDistance && (o.state === ProjectileStates.INTERCEPTING || o.state === ProjectileStates.ACTIVE))
             { 
-                o.traveled = totalDistance;
-                o.state = ProjectileStates.EXPANDING;
+                o.traveled = totalDistance
+                o.state = ProjectileStates.EXPANDING
             }
             o.setCurrentLocation(Point2d.getTraveledDistance(o.pOrigin, dirPoint, o.traveled))
             if(o.isExplosive === true)
             {
                 if(o.radius < o.maxRadius && o.state === ProjectileStates.EXPANDING)
                 {
-                    o.radius += o.growthRate * deltaTime;
+                    o.radius += o.growthRate * deltaTime
                 }
                 else if (o.radius >= o.maxRadius && o.state === ProjectileStates.EXPANDING)
                 {
-                    o.state = ProjectileStates.RETRACTING;
+                    o.state = ProjectileStates.RETRACTING
                 }
                 else if (o.radius > o.minRadius && o.state === ProjectileStates.RETRACTING)
                 {
-                    o.radius -= o.growthRate * deltaTime;
+                    o.radius -= o.growthRate * deltaTime
                 }
                 else if (o.radius <= o.minRadius && o.state === ProjectileStates.RETRACTING)
                 {
@@ -51,11 +51,11 @@ export class Projectiles
     {
         for(var n = 0; n < this.activeProjectiles.length; n++)
         {
-            var o = this.activeProjectiles[n];
+            var o = this.activeProjectiles[n]
             
             if(o.state===ProjectileStates.INTERCEPTING)
             {
-                var pCur = o.getCurrentLocation();
+                var pCur = o.getCurrentLocation()
                 ctx.beginPath()
                 ctx.moveTo(o.pOrigin.x, o.pOrigin.y)
                 ctx.lineTo(pCur.x, pCur.y)
@@ -67,17 +67,17 @@ export class Projectiles
             }
             else (o.isExplosive === true && o.state === ProjectileStates.EXPANDING || o.state === ProjectileStates.RETRACTING)
             {
-                ctx.beginPath();
-                ctx.arc(o.pDestination.x, o.pDestination.y, o.radius, 0, Math.PI * 2);
+                ctx.beginPath()
+                ctx.arc(o.pDestination.x, o.pDestination.y, o.radius, 0, Math.PI * 2)
                 if(o.hit === true)
                 {
                         ctx.fillStyle = 'orange'
                 }
                 else
                 {
-                    ctx.fillStyle = 'white';
+                    ctx.fillStyle = 'white'
                 }    
-                ctx.fill();
+                ctx.fill()
             }
             
         }
@@ -113,7 +113,7 @@ export class Projectile
         this.minRadius = 5
         this.radius = 0
         this.growthRate = 40
-        this.hit = false;
+        this.hit = false
     }
     getCurrentLocation()
     {

@@ -41,17 +41,30 @@ export class Cities
 
     updateCities( deltaTime, activeNukes )
     {
-        //TODO..collision detection
+        //TODO
         //only subtract nuke.damage per collision
         //direct hit vs splash dmg?
+
         for(var z = 0; z < activeNukes.length; z++)
         {
             var o = activeNukes[z]
             if(o.radius > 5)
             {
- 
-                this.activeCities[0].health -= .05
-                console.log('boom')
+                for(var n = 0; n < this.activeCities.length; n++)
+                {
+                    var c = this.activeCities[n]
+
+                    var hit = Rect2d.doesCircleHitRect(
+                        o, c.rect
+                    )
+                    if (hit == true)
+                    {
+                        console.log('city ' + n + ' hit!')
+                        //TODO
+                        //don't calc every frame, once per hit
+                        c.health -= 0.5
+                    }
+                }
             }
         }
         
@@ -88,19 +101,7 @@ export class Cities
                 this.cityHeight        
             )
         }
-        
-        /*
-        for(var n = 0; n < this.activeCities.length; n++)
-        {
-            var o = this.activeCities[n];
-            ctx.beginPath();
-            ctx.rect(o.rect.x, o.rect.y, o.rect.height, o.rect.width);
-            ctx.fillStyle = o.getStrokeStyle();
-            ctx.fill();
-        }
-            */
     }
-
 }
 
 class City
@@ -118,24 +119,7 @@ class City
     }
 
 }
-/*
-const spriteSheet = new Image();
-spriteSheet.src = 'https://example.com/sprite-sheet.png';
 
-const frameWidth = 64; // adjust to your frame size
-const frameHeight = 64;
-const totalFrames = 6;
-let currentFrame = 0;
-let frameTimer = 0;
-const frameDuration = 100; // milliseconds per frame
-
-function update(deltaTime) {
-  frameTimer += deltaTime;
-  if (frameTimer >= frameDuration) {
-    currentFrame = (currentFrame + 1) % totalFrames;
-    frameTimer = 0;
-  }
-}
 
 function draw(ctx, x, y) {
   ctx.drawImage(
@@ -144,6 +128,5 @@ function draw(ctx, x, y) {
     frameWidth, frameHeight,      // source width, height
     x, y,                         // destination x, y
     frameWidth, frameHeight       // destination width, height
-  );
+  )
 }
-  */

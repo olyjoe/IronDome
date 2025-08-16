@@ -13,9 +13,9 @@ export class Nukes extends Projectiles
         }
         super()
         Nukes.instance = this
-        this.activeProjectiles = [];
-        this.counter = 0;
-        this.level = 2;
+        this.activeProjectiles = []
+        this.counter = 0
+        this.level = 2
 
         this.addRandomNuke(this.level);
         
@@ -42,35 +42,35 @@ export class Nukes extends Projectiles
     {
         if ( this.activeProjectiles.length === 0)
         {
-            this.addRandomNuke(this.level);
+            this.addRandomNuke(this.level)
         }
         this.updateProjectiles( deltaTime )
         
         for(var n = 0; n < this.activeProjectiles.length; n++)
         {
-            var o = this.activeProjectiles[n];
+            var o = this.activeProjectiles[n]
             if(o.state === ProjectileStates.REMOVE)
             {
-                this.activeProjectiles.splice(n,1);
-                break;
+                this.activeProjectiles.splice(n,1)
+                break
             }
         }
         
         for(var n = 0; n < this.activeProjectiles.length; n++)
         {
             
-            var o = this.activeProjectiles[n];
+            var o = this.activeProjectiles[n]
            
             if(o.state === ProjectileStates.INACTIVE)
             {
-                o.fadeOut();
-                continue; 
+                o.fadeOut()
+                continue
             }
 
             if(o.state === ProjectileStates.RETRACTING)
             {
-                o.fadeOut();
-                continue;
+                o.fadeOut()
+                continue
             }
         }
        /*
@@ -101,32 +101,32 @@ export class Nukes extends Projectiles
     {        
         for(var n = 0; n < this.activeProjectiles.length; n++)
         {
-            var o = this.activeProjectiles[n];
-            const gradient = ctx.createLinearGradient(o.pOrigin.x, o.pOrigin.y, o.getCurrentLocation().x, o.getCurrentLocation().y);
+            var o = this.activeProjectiles[n]
+            const gradient = ctx.createLinearGradient(o.pOrigin.x, o.pOrigin.y, o.getCurrentLocation().x, o.getCurrentLocation().y)
             gradient.addColorStop(0, o.getStrokeStyle(1))
             gradient.addColorStop(1, o.getStrokeStyle(2))
 
-            ctx.beginPath();
-            ctx.moveTo(o.pOrigin.x, o.pOrigin.y);
-            ctx.lineTo(o.getCurrentLocation().x, o.getCurrentLocation().y);
-            ctx.lineWidth = 5;
-            ctx.strokeStyle = gradient;
-            ctx.lineCap = 'round';
-            ctx.lineCapStyle = 'red';
-            ctx.stroke();
+            ctx.beginPath()
+            ctx.moveTo(o.pOrigin.x, o.pOrigin.y)
+            ctx.lineTo(o.getCurrentLocation().x, o.getCurrentLocation().y)
+            ctx.lineWidth = 5
+            ctx.strokeStyle = gradient
+            ctx.lineCap = 'round'
+            ctx.lineCapStyle = 'red'
+            ctx.stroke()
             
             if (o.state === ProjectileStates.EXPANDING)
             {
-                ctx.beginPath();
-                ctx.arc(o.pDestination.x,o.pDestination.y, o.radius, 0, Math.PI * 2);
-                ctx.fillStyle = o.getStrokeStyle(2);
-                ctx.fill();
+                ctx.beginPath()
+                ctx.arc(o.pDestination.x,o.pDestination.y, o.radius, 0, Math.PI * 2)
+                ctx.fillStyle = o.getStrokeStyle(2)
+                ctx.fill()
             }
         
             if (    o.state === ProjectileStates.ACTIVE && 
                     this.checkCircleCollision(o.getCurrentLocation(), activeMissiles) === true)
             {
-                o.state = ProjectileStates.INACTIVE;
+                o.state = ProjectileStates.INACTIVE
                 o.pDestination = o.getCurrentLocation()
                 this.#game.score += 100
             }
@@ -144,11 +144,11 @@ export class Nukes extends Projectiles
                 var result = Point2d.isPointInCircle(pCurrent, o2.pDestination, o2.radius)
                 if (result)
                 {
-                    o2.hit = true;
+                    o2.hit = true
                 }
                 return result
             }
-            return false;
+            return false
         }
     }
 }
@@ -157,11 +157,12 @@ class Nuke extends Projectile
     constructor(pOrigin, pDestination, state, velocity, rgba, index)
     {
         super(pOrigin, pDestination, state, 'red',   'round',      velocity, 5,rgba, true)
-        this.setCurrentLocation(pOrigin);
+        this.setCurrentLocation(pOrigin)
         this.maxSplits = 0
         this.hassplit = false
-        this.maxRadius = 50;
-        this.growthRate = 30;
+        this.maxRadius = 50
+        this.growthRate = 30
+        this.damage = .05
     }
 
     
@@ -178,11 +179,11 @@ class Nuke extends Projectile
     {
         if(this.rgba.a > 0)
         {
-            this.rgba.a -= .02;
+            this.rgba.a -= .02
         }
         else
         {
-            this.state = ProjectileStates.REMOVE;
+            this.state = ProjectileStates.REMOVE
         }
     }
     

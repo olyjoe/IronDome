@@ -7,11 +7,11 @@ export class Game
             return Game.instance    
         }
         Game.instance = this
-        this.score = 0;
-        this.level = 1;
-        this.missiles = missiles;
-        this.nukes = nukes;
-        this.cities = cities;
+        this.score = 0
+        this.level = 1
+        this.missiles = missiles
+        this.nukes = nukes
+        this.cities = cities
         this.waves = this.level * 7
         this.canvasWidth = 1000
         this.canvasHeight = 900

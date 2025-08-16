@@ -18,15 +18,15 @@ export class Missiles extends Projectiles
 
     updateMissiles(deltaTime) 
     {
-        var tempArr = [];
+        var tempArr = []
         this.updateProjectiles( deltaTime )
         for (var n = 0; n < this.activeProjectiles.length; n++)
         {
             var o = this.activeProjectiles[n]
             if (o.state === ProjectileStates.REMOVE)
             {
-                tempArr = this.activeProjectiles.slice(1);
-                this.activeProjectiles = tempArr;
+                tempArr = this.activeProjectiles.slice(1)
+                this.activeProjectiles = tempArr
             }
         }
     }
@@ -49,8 +49,8 @@ export class Missiles extends Projectiles
 
             var oMis = new Missile(pOrigin,pDestination, velocity, state, rgba)
 
-            this.activeProjectiles.push(oMis);
-            this.missileCount--;
+            this.activeProjectiles.push(oMis)
+            this.missileCount--
         }
     }
 }
@@ -59,6 +59,6 @@ class Missile extends Projectile
     constructor(pOrigin, pDestination, velocity, state, rgba)
     {
         super(pOrigin, pDestination, state, 'red',   'round',      velocity, 5,rgba, true)
-        this.setCurrentLocation(pOrigin);
+        this.setCurrentLocation(pOrigin)
     }
 }
