@@ -8,14 +8,12 @@ import { Game } from "./gameClass.js"
     let canvas = document.getElementById("gameview")
     const ctx = canvas.getContext("2d")
 
-
-
     let missiles = new Missiles()
     let cities = new Cities()
     let nukes = new Nukes()
     let ui = new Ui()
+    let game = new Game()
 
-    let game = new Game(missiles, nukes, cities)
     canvas.height = game.canvasHeight
     canvas.width = game.canvasWidth
 

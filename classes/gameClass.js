@@ -1,6 +1,6 @@
 export class Game
 {
-    constructor(missiles, nukes, cities)
+    constructor()
     {
         if (Game.instance)
         {
@@ -9,9 +9,6 @@ export class Game
         Game.instance = this
         this.score = 0
         this.level = 1
-        this.missiles = missiles
-        this.nukes = nukes
-        this.cities = cities
         this.waves = this.level * 7
         this.canvasWidth = 1000
         this.canvasHeight = 900
