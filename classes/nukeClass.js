@@ -1,8 +1,10 @@
 import { util } from './utilities.js'
 import { Point2d } from './geometryClass.js'
 import { Projectile, Projectiles, ProjectileStates } from './projectileClass.js'
+import { Game } from './gameClass.js'
 export class Nukes extends Projectiles
 {
+    #game = new Game()
     constructor()
     {
         if (Nukes.instace)
@@ -120,6 +122,7 @@ export class Nukes extends Projectiles
                     this.checkCircleCollision(o.getCurrentLocation(), activeMissiles) === true)
             {
                 o.state = ProjectileStates.INACTIVE;
+                this.#game.score += 100
             }
         }
     }
@@ -129,7 +132,6 @@ export class Nukes extends Projectiles
         
         if(activeMissiles.length > 0)
         {
-            console.log(activeMissiles.length)
             for(var n = 0; n < activeMissiles.length; n++)
             {
                 var o2 = activeMissiles[n];

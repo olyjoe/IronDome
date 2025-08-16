@@ -1,13 +1,9 @@
 
-REFACTOR to modules (requires live server instead of allowing local run)
-use classes, imports, and extend
-
 colision detection on city
 city health / damange (impact to score, money, upgrades)
 buy new missles at new round? vs upgrades...(balance)
 delayed/staggered nuke release
-refactor exploding missile class for reuse across both nukes and missiles. 
-lots of duplicate code
+
 score
 levels
 nuke waves
@@ -16,7 +12,7 @@ upgrades? radius, speed, damage
 damage health 
 
 UI - menu
-UI - score
+
 UI - upgrades
 UI - level
 UI - waves

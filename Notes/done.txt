@@ -7,3 +7,10 @@ change from duration to speed
 animate ground explosion
 remove nuke after explosion
 UI - Missile Counter
+make appropriate classes singletons
+UI - score
+
+REFACTOR to modules (requires live server instead of allowing local run)
+use classes, imports, and extend
+refactor exploding missile class for reuse across both nukes and missiles. 
+lots of duplicate code

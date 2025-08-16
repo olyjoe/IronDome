@@ -1,11 +1,19 @@
+import { Game } from "./gameClass.js"
 export class Ui
 {
+    #game = new Game()
     constructor()
     {
+        if (Ui.instace)
+        {
+            return Ui.instance    
+        }
+        Ui.instance = this
         this.assets = [];
         this.testImage = new Image();
         this.testImage.src = 'assets/missile.png'
         this.loadAsset('missileInd', 'assets/missile.png', 20, 50)
+   
     }
 
     loadAsset(id, path, width, height)
@@ -24,4 +32,12 @@ export class Ui
         };
         this.assets.push([{id: id, imageObj: oImg, ready: false}]);
     }
+
+    drawHUD(ctx) {
+        ctx.font = '20px Arial';
+        ctx.fillStyle = 'white';
+        ctx.fillText(`Score: ${this.#game.score}`, 0, 60);
+        //ctx.fillText(`Time: 100`, 0, 90);
+    }
+
 }

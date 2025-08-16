@@ -32,7 +32,7 @@ import { Game } from "./gameClass.js"
     {
         missiles.updateMissiles(deltaTime);
         nukes.updateNukes(deltaTime);      
-        cities.updateCities(deltaTime, nukes.activeNukes)    
+        cities.updateCities(deltaTime, nukes.activeProjectiles)    
     }
 
     function draw(ctx) {
@@ -44,6 +44,7 @@ import { Game } from "./gameClass.js"
                 ctx.drawImage(ui.assets[0].imageObj,(25*n),0, 25, 50);
             }
         }
+        ui.drawHUD(ctx);
         missiles.drawMissiles(ctx);
         cities.drawCities(ctx);
         nukes.drawNukes(ctx, missiles.activeProjectiles);

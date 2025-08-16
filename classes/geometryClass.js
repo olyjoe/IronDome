@@ -21,12 +21,10 @@ export class Point2d {
 
     static isPointInCircle(p1, c1, radius)
     {
-      console.log(radius)
       var zx = p1.x - c1.x;
       var zy = p1.y - c1.y;
       if (radius > 15)
       {
-        console.log('left: ' + (zx * zx + zy * zy) + ' right: ' + (radius * radius))
         if((zx * zx + zy * zy) <= (radius * radius))
         {
           return true;
@@ -36,5 +34,13 @@ export class Point2d {
     }
 }
 
-
+export class Rect2d {
+  constructor(x, y, width, height)
+  {
+    this.x = x
+    this.y = y
+    this.width = width
+    this.height = height
+  }
+}
 
