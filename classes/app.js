@@ -5,7 +5,7 @@ import { Ui } from "./ui.js"
 import { Game } from "./gameClass.js"
 
 
-    const canvas = document.getElementById("gameview");
+    let canvas = document.getElementById("gameview");
     const ctx = canvas.getContext("2d");
 
 
@@ -16,6 +16,8 @@ import { Game } from "./gameClass.js"
     let ui = new Ui();
 
     let game = new Game(missiles, nukes, cities);
+    canvas.height = game.canvasHeight
+    canvas.width = game.canvasWidth
 
     let lastTime = performance.now();
     var deltaTime = 0;

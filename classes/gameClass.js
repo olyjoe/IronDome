@@ -12,6 +12,14 @@ export class Game
         this.missiles = missiles;
         this.nukes = nukes;
         this.cities = cities;
+        this.waves = this.level * 7
+        this.canvasWidth = 1000
+        this.canvasHeight = 900
     }
 
+    levelUp()
+    {
+        this.level += 1
+        this.waves = this.level * 7
+    }
 }

@@ -7,7 +7,7 @@ export class Nukes extends Projectiles
     #game = new Game()
     constructor()
     {
-        if (Nukes.instace)
+        if (Nukes.instance)
         {
             return Nukes.instance    
         }
@@ -25,8 +25,13 @@ export class Nukes extends Projectiles
     {
         for (var n = 0; n < level; n++)
         {  
-            var pOrigin = new Point2d(util.getRandomValue(1,999), 0)
-            var pDest = new Point2d(util.getRandomValue(1,999), 999)
+            var pOrigin = new Point2d(
+                    util.getRandomValue(1,this.#game.canvasWidth), 
+                    0)
+            
+            var pDest = new Point2d(
+                    util.getRandomValue(1,this.#game.canvasWidth),
+                    this.#game.canvasHeight)
             
             this.activeProjectiles.push(new Nuke(pOrigin, pDest, ProjectileStates.ACTIVE, 100, {r: 200, g:10, b:10, a:1}, ++this.counter))
 
@@ -122,6 +127,7 @@ export class Nukes extends Projectiles
                     this.checkCircleCollision(o.getCurrentLocation(), activeMissiles) === true)
             {
                 o.state = ProjectileStates.INACTIVE;
+                o.pDestination = o.getCurrentLocation()
                 this.#game.score += 100
             }
         }

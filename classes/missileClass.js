@@ -1,16 +1,17 @@
 
 import { Point2d } from './geometryClass.js'
 import { Projectile, Projectiles, ProjectileStates } from './projectileClass.js'
+import { Game } from './gameClass.js'
 export class Missiles extends Projectiles
 {
-    
+    #game = new Game()
     constructor() {
-        if (Missiles.instace)
+        if (Missiles.instance)
         {
             return Missiles.instance    
         }
         super()
-        Missiles.instace = this
+        Missiles.instance = this
         this.maxMissiles = 3
         this.missileCount = 10
     }
@@ -39,7 +40,9 @@ export class Missiles extends Projectiles
         if(this.missileCount > 0 && this.activeProjectiles.length <= this.maxMissiles)
         {   
             var pDestination = new Point2d(e.clientX, e.clientY)
-            var pOrigin = new Point2d(500,1000)
+            var pOrigin = new Point2d(
+                this.#game.canvasWidth / 2,
+                this.#game.canvasHeight )
             var velocity = 1800
             var state = ProjectileStates.INTERCEPTING
             var rgba = {r:255, g:255, b:255, a: 1}

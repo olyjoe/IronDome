@@ -20,3 +20,8 @@ UI - waves
 upgrade graphics/assets
 game over
 restart
+
+spritesheet 1024,1024
+width 256
+height of image: 450
+top offset 281

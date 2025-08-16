@@ -14,3 +14,5 @@ REFACTOR to modules (requires live server instead of allowing local run)
 use classes, imports, and extend
 refactor exploding missile class for reuse across both nukes and missiles. 
 lots of duplicate code
+
+building spritesheet
