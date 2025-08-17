@@ -39,7 +39,7 @@ export class Cities
 
     addCity(x)
     {
-        var rect = new Rect2d(
+        const rect = new Rect2d(
                 //x
                 x,
                 //y
@@ -62,18 +62,15 @@ export class Cities
         if(this.activeCities.reduce((sum, item) => sum + item.health, 0) === 0)
             this.#game.gameOver = true
 
-        for(var z = 0; z < activeNukes.length; z++)
+        for (const o of activeNukes)
         {
-            var o = activeNukes[z]
             if(o.radius > 5)
             {
-                for(var n = 0; n < this.activeCities.length; n++)
-                {
-                    var c = this.activeCities[n]
-                    
+                for (const c of this.activeCities)
+                {                    
                     if(c.hitBy.indexOf(o.id) === -1)
                     {
-                        var hit = Rect2d.doesCircleHitRect(
+                        let hit = Rect2d.doesCircleHitRect(
                             o, c.rect
                         )
                         if (hit === true)
@@ -99,10 +96,8 @@ export class Cities
         if(this.#ui.assets[1].ready != true)
             return;
 
-        for(var n = 0; n < this.activeCities.length; n++)
+        for (const o of this.activeCities)
         {
-            var o = this.activeCities[n]
-
             ctx.drawImage(
                 //maybe make a spriteSheet class?
                 //image sprite sheet asset

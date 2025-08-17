@@ -21,8 +21,8 @@ export class Point2d {
 
     static isPointInCircle(p1, c1, radius)
     {
-      var zx = p1.x - c1.x
-      var zy = p1.y - c1.y
+      const zx = p1.x - c1.x
+      const zy = p1.y - c1.y
       if (radius > 15)
       {
         if((zx * zx + zy * zy) <= (radius * radius))

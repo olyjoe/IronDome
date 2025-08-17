@@ -18,7 +18,7 @@ import { Game } from "./gameClass.js"
     canvas.width = game.canvasWidth
 
     let lastTime = performance.now()
-    var deltaTime = 0
+    let deltaTime = 0
     function gameLoop( currentTime ) {
         deltaTime = (currentTime - lastTime) / 1000
         lastTime = currentTime
@@ -49,8 +49,7 @@ import { Game } from "./gameClass.js"
                 return;
         if(ui.assets[0].ready)
         {
-        
-            for(var n = 0; n < missiles.missileCount; n++)
+            for(let n = 0; n < missiles.missileCount; n++)
             {
                 ctx.drawImage(ui.assets[0].imageObj,(25*n),0, 25, 50)
             }

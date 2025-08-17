@@ -28,13 +28,13 @@ export class Nukes extends Projectiles
 
     addRandomNuke(level)
     {
-        for (var n = 0; n < level; n++)
+        for (let n = 0; n < level; n++)
         {  
-            var pOrigin = new Point2d(
+            const pOrigin = new Point2d(
                     util.getRandomValue(1,this.#game.canvasWidth), 
                     0)
             
-            var pDest = new Point2d(
+            const pDest = new Point2d(
                     util.getRandomValue(1,this.#game.canvasWidth),
                     this.#game.canvasHeight)
             
@@ -55,11 +55,10 @@ export class Nukes extends Projectiles
             this.addRandomNuke(this.level)
         }
         this.updateProjectiles( deltaTime )
-        
-        for(var n = 0; n < this.activeProjectiles.length; n++)
-        {
-            var o = this.activeProjectiles[n]
-            if(o.state === ProjectileStates.REMOVE)
+
+        for (let n = 0; n < this.activeProjectiles.length; n++)
+        { 
+            if(this.activeProjectiles[n].state === ProjectileStates.REMOVE)
             {
                 this.activeProjectiles.splice(n,1)
                 break
@@ -70,11 +69,8 @@ export class Nukes extends Projectiles
             // }
         }
         
-        for(var n = 0; n < this.activeProjectiles.length; n++)
+        for (const o of this.activeProjectiles)
         {
-            
-            var o = this.activeProjectiles[n]
-           
             if(o.state === ProjectileStates.INACTIVE)
             {
                 o.fadeOut()
@@ -92,10 +88,9 @@ export class Nukes extends Projectiles
     drawNukes(ctx, activeMissiles)
     {
         if (this.#game.gameOver === true)
-            return        
-        for(var n = 0; n < this.activeProjectiles.length; n++)
+            return
+        for (const o of this.activeProjectiles)
         {
-            var o = this.activeProjectiles[n]
             const gradient = ctx.createLinearGradient(o.pOrigin.x, o.pOrigin.y, o.getCurrentLocation().x, o.getCurrentLocation().y)
             gradient.addColorStop(0, o.getStrokeStyle(1))
             gradient.addColorStop(1, o.getStrokeStyle(2))
@@ -132,10 +127,9 @@ export class Nukes extends Projectiles
         
         if(activeMissiles.length > 0)
         {
-            for(var n = 0; n < activeMissiles.length; n++)
+            for (const o2 of activeMissiles)
             {
-                var o2 = activeMissiles[n];
-                var result = Point2d.isPointInCircle(pCurrent, o2.pDestination, o2.radius)
+                const result = Point2d.isPointInCircle(pCurrent, o2.pDestination, o2.radius)
                 if (result)
                 {
                     o2.hit = true

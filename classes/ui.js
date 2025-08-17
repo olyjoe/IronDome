@@ -23,8 +23,8 @@ export class Ui
 
     loadAsset(id, path, width, height)
     {
-        var index = this.assets.length
-        var oImg = new Image(width, height)
+        const index = this.assets.length
+        const oImg = new Image(width, height)
         oImg.src = path
         oImg.onload = () => {
             this.assets[index].imageObj = oImg
@@ -41,18 +41,19 @@ export class Ui
 
     drawMenu(ctx)
     {
-        this.menuItems.forEach(item => {
-            ctx.fillStyle = '#007BFF';
-            ctx.fillRect(item.x, item.y, item.width, item.height);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '16px Arial';
-            ctx.fillText(item.text, item.x + 10, item.y + 25);
-        });
+        for(const item in this.menuItems)
+        {
+            ctx.fillStyle = '#007BFF'
+            ctx.fillRect(item.x, item.y, item.width, item.height)
+            ctx.fillStyle = '#FFFFFF'
+            ctx.font = '16px Arial'
+            ctx.fillText(item.text, item.x + 10, item.y + 25)
+        }
         let canvas = document.getElementById("gameview")
         canvas.addEventListener('click', (event) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = event.clientX - rect.left;
-            const mouseY = event.clientY - rect.top;
+            const rect = canvas.getBoundingClientRect()
+            const mouseX = event.clientX - rect.left
+            const mouseY = event.clientY - rect.top
 
             this.menuItems.forEach(item => {
                 if (
@@ -67,8 +68,8 @@ export class Ui
                         this.#game.isRestarting = true
                     }
                 }
-        });
-    });
+        })
+    })
 }
 
  

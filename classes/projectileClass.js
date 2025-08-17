@@ -8,10 +8,8 @@ export class Projectiles
     
     updateProjectiles( deltaTime )
     {
-        
-        for(var n = 0; n < this.activeProjectiles.length; n++)
+        for(const o of this.activeProjectiles)
         {
-            var o = this.activeProjectiles[n]
             const deltaPoint = Point2d.getDistanceBetween2Points(o.pOrigin, o.pDestination)
             const totalDistance = Math.hypot(deltaPoint.x, deltaPoint.y)
             const dirPoint = Point2d.getPointAtDistance(deltaPoint, totalDistance)
@@ -43,19 +41,16 @@ export class Projectiles
                     o.state = ProjectileStates.REMOVE
                 }
             }
-            
         }
     }
     
     drawProjectile(ctx)
     {
-        for(var n = 0; n < this.activeProjectiles.length; n++)
-        {
-            var o = this.activeProjectiles[n]
-            
+        for(const o of this.activeProjectiles)
+        {            
             if(o.state===ProjectileStates.INTERCEPTING)
             {
-                var pCur = o.getCurrentLocation()
+                let pCur = o.getCurrentLocation()
                 ctx.beginPath()
                 ctx.moveTo(o.pOrigin.x, o.pOrigin.y)
                 ctx.lineTo(pCur.x, pCur.y)

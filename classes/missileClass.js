@@ -27,11 +27,10 @@ export class Missiles extends Projectiles
         {
             this.restart()
         }
-        var tempArr = []
+        let tempArr = []
         this.updateProjectiles( deltaTime )
-        for (var n = 0; n < this.activeProjectiles.length; n++)
+        for (const o of this.activeProjectiles)
         {
-            var o = this.activeProjectiles[n]
             if (o.state === ProjectileStates.REMOVE)
             {
                 tempArr = this.activeProjectiles.slice(1)
@@ -50,15 +49,15 @@ export class Missiles extends Projectiles
     {
         if(this.missileCount > 0 && this.activeProjectiles.length <= this.maxMissiles)
         {   
-            var pDestination = new Point2d(e.clientX, e.clientY)
-            var pOrigin = new Point2d(
+            const pDestination = new Point2d(e.clientX, e.clientY)
+            const pOrigin = new Point2d(
                 this.#game.canvasWidth / 2,
                 this.#game.canvasHeight )
-            var velocity = 1800
-            var state = ProjectileStates.INTERCEPTING
-            var rgba = {r:255, g:255, b:255, a: 1}
+            let velocity = 1800
+            let state = ProjectileStates.INTERCEPTING
+            let rgba = {r:255, g:255, b:255, a: 1}
 
-            var oMis = new Missile(pOrigin,pDestination, velocity, state, rgba)
+            let oMis = new Missile(pOrigin,pDestination, velocity, state, rgba)
 
             this.activeProjectiles.push(oMis)
             this.missileCount--
