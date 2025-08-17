@@ -12,12 +12,21 @@ export class Missiles extends Projectiles
         }
         super()
         Missiles.instance = this
+        this.restart()
+    }
+
+    restart()
+    {
         this.maxMissiles = 3
         this.missileCount = 10
     }
-
+    
     updateMissiles(deltaTime) 
     {
+        if (this.#game.isRestarting === true)
+        {
+            this.restart()
+        }
         var tempArr = []
         this.updateProjectiles( deltaTime )
         for (var n = 0; n < this.activeProjectiles.length; n++)
@@ -33,6 +42,8 @@ export class Missiles extends Projectiles
 
     drawMissiles(ctx)
     {
+        if (this.#game.gameOver === true)
+            return
         this.drawProjectile(ctx)
     }
     handleClick(e)

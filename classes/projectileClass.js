@@ -92,6 +92,8 @@ export class ProjectileStates
     static INTERCEPTING = 4
     static EXPANDING = 5
     static RETRACTING = 6
+    static STAGED = 7
+    static QUEUED = 8
 }
 
 export class Projectile

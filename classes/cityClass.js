@@ -21,26 +21,44 @@ export class Cities
         this.cityHeight = 175
         this.cityWidth = 50
 
-        //TODO - no longer drawing a rectangle for a city
-        // needs cleanup unless I need the rectangle for collision detection
-
-        this.addCity(75,925,75,50)
-        this.addCity(190,925,75,50)
-        this.addCity(305,925,75,50)
-        this.addCity(645,925,75,50)
-        this.addCity(760,925,75,50)
-        this.addCity(875,925,75,50)
+        this.restart()
+       
 
     }
 
-    addCity(x, y, h, w)
+    restart()
     {
-        var rect = new Rect2d(x, y, h, w)
+        this.activeCities = []
+        this.addCity(75)
+        this.addCity(190)
+        this.addCity(305)
+        this.addCity(645)
+        this.addCity(760)
+        this.addCity(875)
+    }
+
+    addCity(x)
+    {
+        var rect = new Rect2d(
+                //x
+                x,
+                //y
+                this.#game.canvasHeight - this.cityHeight, 
+                // draw width       
+                this.cityWidth, 
+                // draw height
+                this.cityHeight
+        )
+        
         this.activeCities.push(new City(rect, 100))
     }
 
     updateCities( deltaTime, activeNukes )
     {
+        if(this.#game.isRestarting)
+        {
+            this.restart()
+        }
         if(this.activeCities.reduce((sum, item) => sum + item.health, 0) === 0)
             this.#game.gameOver = true
 
@@ -97,14 +115,14 @@ export class Cities
                 this.frameWidth, 
                 //sprite source height
                 this.frameHeight, 
-                // draw on canvas at x
+                // city x
                 o.rect.x,
-                // draw on cavas at y
-                this.#game.canvasHeight - this.cityHeight, 
-                // draw width       
-                this.cityWidth, 
-                // draw height
-                this.cityHeight        
+                // city y
+                o.rect.y, 
+                // city width       
+                o.rect.width, 
+                // city height
+                o.rect.height        
             )
         }
     }

@@ -21,4 +21,5 @@ sounds?
 
 restart
 
-
+investigate a better way to handle the menu, perhaps canvas swapping?
+remove event handler?

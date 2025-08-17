@@ -28,7 +28,7 @@ import { Game } from "./gameClass.js"
         if(game.gameOver)
         {
             ui.drawGameOver(ctx);
-            return;
+            ui.drawMenu(ctx);
         }
         requestAnimationFrame(gameLoop)
     }
@@ -37,10 +37,16 @@ import { Game } from "./gameClass.js"
     {
         missiles.updateMissiles(deltaTime)
         nukes.updateNukes(deltaTime)     
-        cities.updateCities(deltaTime, nukes.activeProjectiles)    
+        cities.updateCities(deltaTime, nukes.activeProjectiles) 
+        if(game.isRestarting)
+        {
+            game.isRestarting = false     
+        }
     }
 
     function draw(ctx) {
+        if(game.isRestarting)
+                return;
         if(ui.assets[0].ready)
         {
         

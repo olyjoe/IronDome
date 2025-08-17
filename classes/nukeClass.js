@@ -13,12 +13,17 @@ export class Nukes extends Projectiles
         }
         super()
         Nukes.instance = this
+        this.restart()
+        this.lastQueueTime = null
+    }
+
+    restart()
+    {
         this.activeProjectiles = []
         this.counter = 0
-        this.level = 2
+        this.level = 12
 
         this.addRandomNuke(this.level);
-        
     }
 
     addRandomNuke(level)
@@ -33,6 +38,7 @@ export class Nukes extends Projectiles
                     util.getRandomValue(1,this.#game.canvasWidth),
                     this.#game.canvasHeight)
             
+            //this.activeProjectiles.push(new Nuke(pOrigin, pDest, ProjectileStates.STAGED, 100, {r: 200, g:10, b:10, a:1}, ++this.counter))
             this.activeProjectiles.push(new Nuke(pOrigin, pDest, ProjectileStates.ACTIVE, 100, {r: 200, g:10, b:10, a:1}, ++this.counter))
 
         }
@@ -40,6 +46,10 @@ export class Nukes extends Projectiles
 
     updateNukes( deltaTime )
     {
+        if (this.#game.isRestarting === true)
+        {
+            this.restart()
+        }
         if ( this.activeProjectiles.length === 0)
         {
             this.addRandomNuke(this.level)
@@ -54,6 +64,10 @@ export class Nukes extends Projectiles
                 this.activeProjectiles.splice(n,1)
                 break
             }
+            // if(o.state === ProjectileStates.STAGED)
+            // {
+
+            // }
         }
         
         for(var n = 0; n < this.activeProjectiles.length; n++)
@@ -76,7 +90,9 @@ export class Nukes extends Projectiles
     }
 
     drawNukes(ctx, activeMissiles)
-    {        
+    {
+        if (this.#game.gameOver === true)
+            return        
         for(var n = 0; n < this.activeProjectiles.length; n++)
         {
             var o = this.activeProjectiles[n]
@@ -148,7 +164,7 @@ class Nuke extends Projectile
         this.hassplit = false
         this.maxRadius = 50
         this.growthRate = 30
-        this.damage = 25
+        this.damage = 100
         this.id = index
     }
  
