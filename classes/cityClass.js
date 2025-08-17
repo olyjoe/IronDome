@@ -133,7 +133,7 @@ class City
         this.hitBy = [];
     }
 
-     getStrokeStyle()
+    getStrokeStyle()
     {
        return 'rgba(' + this.rgba.r + ',' + this.rgba.g + ',' + this.rgba.b + ',' + this.rgba.a + ')'
     }

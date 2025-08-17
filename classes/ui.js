@@ -41,7 +41,7 @@ export class Ui
 
     drawMenu(ctx)
     {
-        for(const item in this.menuItems)
+        for(const item of this.menuItems)
         {
             ctx.fillStyle = '#007BFF'
             ctx.fillRect(item.x, item.y, item.width, item.height)
